@@ -3,7 +3,7 @@
 # create simple context manager resource
 # with statement create a runtime context
 
-import contextlib
+from contextlib import contextmanager
 
 
 # class based context manager
@@ -22,3 +22,10 @@ class ActivityManager:
 
         
 # function based context manager
+@contextmanager
+def activity_manager(filename:str):
+    file = open(filename, "w")
+    try:
+        yield file
+    finally:
+        file.close()
