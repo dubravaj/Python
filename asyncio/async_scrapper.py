@@ -1,7 +1,9 @@
 import logging
+import re
+from typing import IO, List, Pattern, Set
 import asyncio
-import aiohttp
-from aiohttp import ClientSession
+from aiohttp import ClientSession, ClientError
+from aiohttp.http_exceptions import HttpProcessingError
 import aiofiles
 
 logging.basicConfig(
@@ -12,9 +14,11 @@ logging.basicConfig(
 class Scrapper:
     """Example of using asynchronous libraries"""
     
-    def __init__(self, filename):
+    def __init__(self, filename, outfile):
         self.urls_file = filename
-        self.logger = logging.getLogger("aiologger")
+        self.output_file = outfile
+        self.logger = logging.getLogger("asynclogger")
+        self.pattern = re.compile(r'href="(.*?)"')
 
     def load_urls(self):
         """Load urls from file"""
@@ -29,10 +33,35 @@ class Scrapper:
         content = await response.text()
         return content
 
+    async def find_pattern(self, pattern: Pattern[str], content: str) -> Set[str]:
+        """Find all matches for given pattern"""
+        pattern_occurences = pattern.findall(content)
+        return set(pattern_occurences)
+
+    async def scrap_and_write(self, url: str, session: ClientSession) -> None:
+        """Scrap the links of the webpage and write it to the file"""
+        try:
+            content = await self.fetch_url_content(url=url,session=session)
+        except (
+            ClientError,
+            HttpProcessingError
+        ) as e:
+            self.logger.error(f"Unable to get content for url: {url}")
+            return None
+        else:
+            occurences = await self.find_pattern(self.pattern, content)
+            if not occurences:
+                return None
+            async with aiofiles.open(self.output_file, "a") as f:
+                for occurence_str in occurences:
+                    await f.write(f"{url}\t{occurence_str}\n")
+                self.logger.info(f"Writing pattern match results for url: {url}")
+
     async def scrap(self):
         """Scrap url content"""
         self.load_urls()
         async with ClientSession() as session:
+            scrap_tasks = []
             for url in self.urls:
-                content = await self.fetch_url_content(url=url,session=session)
-                print(content)
+                scrap_tasks.append(self.scrap_and_write(url, session))
+            await asyncio.gather(*scrap_tasks)

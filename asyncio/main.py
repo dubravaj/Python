@@ -10,8 +10,9 @@ async def main():
     print(powers)
     
     # scrapping demo
-    file = pathlib.Path(__file__).parent.joinpath("urls.txt")
-    scrapper = Scrapper(file)
+    input_urls = pathlib.Path(__file__).parent.joinpath("urls.txt")
+    output = pathlib.Path(__file__).parent.joinpath("links.txt")
+    scrapper = Scrapper(input_urls, output)
     await scrapper.scrap()
 
 
