@@ -6,14 +6,12 @@ from aiohttp import ClientSession, ClientError
 from aiohttp.http_exceptions import HttpProcessingError
 import aiofiles
 
-logging.basicConfig(
-    format="%(levelname)s:%(name)s: %(message)s",
-    level=logging.DEBUG
-)
+logging.basicConfig(format="%(levelname)s:%(name)s: %(message)s", level=logging.DEBUG)
+
 
 class Scrapper:
     """Example of using asynchronous libraries"""
-    
+
     def __init__(self, filename, outfile):
         self.urls_file = filename
         self.output_file = outfile
@@ -22,7 +20,7 @@ class Scrapper:
 
     def load_urls(self):
         """Load urls from file"""
-        with open(self.urls_file,"r") as urls_file:
+        with open(self.urls_file, "r") as urls_file:
             self.urls = set(map(str.strip, urls_file))
 
     async def fetch_url_content(self, url: str, session: ClientSession):
@@ -41,11 +39,8 @@ class Scrapper:
     async def scrap_and_write(self, url: str, session: ClientSession) -> None:
         """Scrap the links of the webpage and write it to the file"""
         try:
-            content = await self.fetch_url_content(url=url,session=session)
-        except (
-            ClientError,
-            HttpProcessingError
-        ) as e:
+            content = await self.fetch_url_content(url=url, session=session)
+        except (ClientError, HttpProcessingError) as e:
             self.logger.error(f"Unable to get content for url: {url}")
             return None
         else:

@@ -21,9 +21,7 @@ def get_address(geo_point: GeoPoint) -> str:
 
     point = f"{geo_point.lat}, {geo_point.long}"
     location = locator.reverse(point)
-    logger.info(
-        f"Address of point ({geo_point.lat},{geo_point.long}) is: {location.address}"
-    )
+    logger.info(f"Address of point ({geo_point.lat},{geo_point.long}) is: {location.address}")
 
     return location.address
 
@@ -40,9 +38,7 @@ def get_distance(point1: GeoPoint, point2: GeoPoint, units="km") -> float:
     else:
         distance = distance.miles
 
-    print(
-        f"Distance between {address1} and {address2} is {format(distance, '.2f')} {units}"
-    )
+    print(f"Distance between {address1} and {address2} is {format(distance, '.2f')} {units}")
 
     return distance
 

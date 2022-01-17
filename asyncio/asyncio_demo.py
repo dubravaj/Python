@@ -9,7 +9,8 @@ async def count():
     await asyncio.sleep(1)
     print("Two")
 
-async def mygen(bound = 20):
+
+async def mygen(bound=20):
     """Yield power of number 2"""
     i = 0
     while i < bound:

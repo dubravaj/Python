@@ -20,10 +20,10 @@ class ActivityManager:
     def __exit__(self, exc_type, exc_value, exc_tb):
         self.file.close()
 
-        
+
 # function based context manager
 @contextmanager
-def activity_manager(filename:str):
+def activity_manager(filename: str):
     file = open(filename, "w")
     try:
         yield file
