@@ -46,7 +46,19 @@ built-in <b>id</b> function, similarly, the \_\_cmp\_\_ operator compares the nu
     - \_\_builtin\_\_ object is search after lookup was unsucessful in locals and globals
     - importing functions from module will speed up the code - less lookups
     - local reference to global object could be helpfull if it is needed in a loop called many time
-    
+
+#### <b>Iterators and Generators</b>
+
+- iterable object - has \_\_iter\_\_ method
+- to make iterator from object - use <b>iter</b> builtin function
+- generator is also an iterator
+- <b>xrange</b> is a generator
+- <b>range</b> - we need to allocate
+a new list and precompute its values, and then we still must create an iterator
+- <b>generator comprehension</b> - (\<value\> for \<item\> in \<sequence\> if \<condition\>)
+- generators are ideal for infinite series
+- <b>itertools</b> module 
+
 
 
 
