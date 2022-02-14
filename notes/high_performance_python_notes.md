@@ -59,6 +59,35 @@ a new list and precompute its values, and then we still must create an iterator
 - generators are ideal for infinite series
 - <b>itertools</b> module 
 
+#### <b>Matrix and Vector Computation</b>
+- Python does not natively support vectorization
+    - reasons: Python lists store pointers to the actual data, Python bytecode is not optimized for vectorization
+- pointers in lists are source of a lot of performance degradation for matrix operations
+- problem with data fragmentation in memory
+- Von Neuman bottleneck - we cant transfer the data needed by CPU instantly
+ - branch prediction and pipelining - try to predict the next instruction and load the relevant portions of memory into the cache while still working
+on the current instruction
+- linux <b>perf</b>
+    - pipelining -  To get a better handle on this pipelining, stalled-
+cycles-frontend and stalled-cycles-backend tell us how many cycles our program
+was waiting for the frontend or backend of the pipeline to be filled
+    - With pipelining, the CPU is able to run the current operation while fetching
+and preparing the next one
+- vectorization can be done only if we hve all necessary data in CPU cache (need to have data in a continuous memory block)
+- <b>array</b> object stores data sequentially in the memory
+
+- <b>numpy</b>
+    - can efficiently vectorize operations
+    - stores data in contiguous chunks of memory
+    - e.g. numpy.dot is vectorized
+
+    - operations e.g. <b>+=,*=</b> are done in-place, arr = arr + arr2 is not done in place
+- <b>numexpr</b> module
+
+
+
+
+
 
 
 
